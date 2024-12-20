@@ -1,0 +1,256 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /api/matches/update/{id}:
+    put:
+      tags:
+        - match-controller
+      operationId: updateMatch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Match'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MatchEntity'
+  /api/match-odds/update/{id}:
+    put:
+      tags:
+        - match-odds-controller
+      operationId: updateMatchOdds
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchOddsEntity'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MatchOddsEntity'
+  /api/matches/create:
+    post:
+      tags:
+        - match-controller
+      operationId: createMatch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Match'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MatchEntity'
+  /api/match-odds/create:
+    post:
+      tags:
+        - match-odds-controller
+      operationId: createMatchOdds
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchOddsEntity'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MatchOddsEntity'
+  /api/matches/get/{id}:
+    get:
+      tags:
+        - match-controller
+      operationId: getMatchById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MatchEntity'
+  /api/matches/all:
+    get:
+      tags:
+        - match-controller
+      operationId: getAllMatches
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MatchEntity'
+  /api/match-odds/get/{id}:
+    get:
+      tags:
+        - match-odds-controller
+      operationId: getMatchOddsById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MatchOddsEntity'
+  /api/match-odds/all:
+    get:
+      tags:
+        - match-odds-controller
+      operationId: getAllMatchOdds
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MatchOddsEntity'
+  /api/matches/delete/{id}:
+    delete:
+      tags:
+        - match-controller
+      operationId: deleteMatch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /api/match-odds/delete/{id}:
+    delete:
+      tags:
+        - match-odds-controller
+      operationId: deleteMatchOdds
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    LocalTime:
+      type: object
+      properties:
+        hour:
+          type: integer
+          format: int32
+        minute:
+          type: integer
+          format: int32
+        second:
+          type: integer
+          format: int32
+        nano:
+          type: integer
+          format: int32
+    Match:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        matchDate:
+          type: string
+          format: date
+        matchTime:
+          $ref: '#/components/schemas/LocalTime'
+        teamA:
+          type: string
+        teamB:
+          type: string
+        sport:
+          type: string
+          enum:
+            - FOOTBALL
+            - BASKETBALL
+    MatchEntity:
+      type: object
+      properties:
+        description:
+          type: string
+        matchDate:
+          type: string
+          format: date
+        matchTime:
+          $ref: '#/components/schemas/LocalTime'
+        teamA:
+          type: string
+        teamB:
+          type: string
+        sport:
+          type: string
+    MatchOddsEntity:
+      type: object
+      properties:
+        matchId:
+          type: integer
+          format: int64
+        specifier:
+          type: string
+        odd:
+          type: number
+          format: double
